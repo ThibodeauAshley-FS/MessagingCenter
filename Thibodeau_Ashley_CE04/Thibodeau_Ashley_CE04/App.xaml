@@ -1,4 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+/*
+Ashley Thibodeau
+Interface Programming
+Code Exercise 04
+
+GitHub Link: https://github.com/InterfaceProgramming/ce4-ThibodeauAshley-FS
+
+ */-->
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Thibodeau_Ashley_CE04.App">
