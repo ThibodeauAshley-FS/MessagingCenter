@@ -125,15 +125,7 @@ namespace Thibodeau_Ashley_CE04
 
         }
 
-        private void ClearFiles(string fileName)
-        {
-            if(File.Exists(fileName))
-            {
-                File.Delete(fileName);
-            }
-        }
 
-        //Toggle Visibility
         private void DeleteAll_Button()
         {
             if (eventList.Count >= 1)

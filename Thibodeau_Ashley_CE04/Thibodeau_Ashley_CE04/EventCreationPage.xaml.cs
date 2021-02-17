@@ -35,7 +35,8 @@ namespace Thibodeau_Ashley_CE04
             {
                 editEvent = sender;
                 eventEntry.Text = sender.EventName;
-
+                datePicker.Date = sender.Date;
+                timePicker.Time = sender.Time;
             });
         }
 
