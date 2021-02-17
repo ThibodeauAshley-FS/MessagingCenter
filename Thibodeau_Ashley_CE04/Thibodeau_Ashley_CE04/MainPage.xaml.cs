@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Thibodeau_Ashley_CE04.Models;
+using System.Diagnostics;
 using System.IO;
 using Xamarin.Forms;
 
@@ -45,16 +46,22 @@ namespace Thibodeau_Ashley_CE04
 
         }
 
-        private void BtnDeleteAll_Clicked(object sender, EventArgs e)
+        async private void BtnDeleteAll_Clicked(object sender, EventArgs e)
         {
-            var files = Directory.EnumerateFiles(App.FolderPath, "*.CE04.txt");
+            bool answer = await DisplayAlert("Confirm Delete All", "The action you are trying to take cannot be reversed. Are you sure you would like to delete all your saved data?", "Yes", "No");
+            Debug.WriteLine("Popup Answer: " + answer);
 
-            foreach(var filename in files)
+            if (answer)
             {
-                File.Delete(filename);
-            }
+                var files = Directory.EnumerateFiles(App.FolderPath, "*.CE04.txt");
 
-            ReloadListData();
+                foreach (var filename in files)
+                {
+                    File.Delete(filename);
+                }
+
+                ReloadListData();
+            }
 
         }
 
@@ -128,14 +135,16 @@ namespace Thibodeau_Ashley_CE04
 
         private void DeleteAll_Button()
         {
-            if (eventList.Count >= 1)
-            {
-                btnDeleteAll.IsVisible = true;
-            }
-            else if (eventList.Count < 1)
-            {
-                btnDeleteAll.IsVisible = false;
-            }
+
+                if (eventList.Count >= 1)
+                {
+                    btnDeleteAll.IsVisible = true;
+                }
+                else if (eventList.Count < 1)
+                {
+                    btnDeleteAll.IsVisible = false;
+                }
+            
         }
 
     }

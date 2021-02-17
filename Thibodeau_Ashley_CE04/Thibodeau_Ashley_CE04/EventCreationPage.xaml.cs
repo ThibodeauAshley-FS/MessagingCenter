@@ -29,7 +29,7 @@ namespace Thibodeau_Ashley_CE04
 
             btnSave.Clicked += BtnSave_Clicked;
             btnDelete.Clicked += BtnDelete_Clicked;
-            datePicker.DateSelected += DatePicker_DateSelected;
+
 
             MessagingCenter.Subscribe<EventDetails>(this, "EditItemMessage", (sender) =>
             {
@@ -38,21 +38,6 @@ namespace Thibodeau_Ashley_CE04
                 datePicker.Date = sender.Date;
                 timePicker.Time = sender.Time;
             });
-        }
-
-        private void DatePicker_DateSelected(object sender, DateChangedEventArgs e)
-        {
-            var dateSelected = datePicker.Date;
-
-            string wDay = dateSelected.DayOfWeek.ToString();
-
-            switch(wDay)
-            {
-                case "":
-
-                    break;
-            }
-
         }
 
         private string AssignIMG()
@@ -98,15 +83,17 @@ namespace Thibodeau_Ashley_CE04
             bool answer = await DisplayAlert("Delete Event", "Are you sure you would like to delete this Event?", "Yes", "No");
             Debug.WriteLine("Popup Answer: " + answer);
 
-            if(answer)
+            if (answer)
             {
-                if(editEvent != null)
+                if (editEvent != null)
                 {
-                    if(File.Exists(editEvent.Filename))
+                    if (File.Exists(editEvent.Filename))
                     {
                         File.Delete(editEvent.Filename);
                     }
                 }
+                MessagingCenter.Send<String>("Delete", "ModifiedMessage");
+                await Navigation.PopAsync();
             }
         }
 
@@ -117,39 +104,45 @@ namespace Thibodeau_Ashley_CE04
             string messageType = "New";
             var eventName = eventEntry.Text;
             var eventDate = datePicker.Date;
-            string strDate = $"{ eventDate.Date.ToString("d") } {timePicker.Time.ToString("t")}";
+
+            string strDate = $"{ eventDate.Date:d} {timePicker.Time:t}";
             string date = eventDate.Date.ToString("d");
             string time = timePicker.Time.ToString();
             var dayIMG = AssignIMG();
-
+            bool pass = true;
 
             if (editEvent != null)
             {
-                bool answer = await DisplayAlert("Save Event", "Are you sure you would like to save this Event?", "Yes", "No");
+                bool answer = await DisplayAlert("Confirm Recent Changes", "You are about to make changes to your saved information. Would you like to continue?", "Yes", "No");
                 Debug.WriteLine("Popup Save Answer: " + answer);
                 if (answer)
                 {
                     //Save
                     filename = editEvent.Filename;
                     messageType = "Edit";
-
+                    File.WriteAllText(filename, $"{eventName},{strDate},{date},{time},{dayIMG}");
+                    MessagingCenter.Send<String>(messageType, "ModifiedMessage");
+                    await Navigation.PopAsync();
+                }
+                else
+                {
+                    pass = false;
                 }
 
             }
 
-            SaveFile(messageType, filename, eventName, strDate, date, time, dayIMG);
+            if(pass)
+            {
 
-            
+                File.WriteAllText(filename, $"{eventName},{strDate},{date},{time},{dayIMG}");
+                MessagingCenter.Send<String>(messageType, "ModifiedMessage");
+                await Navigation.PopAsync();
+
+            }
+
 
         }
 
-        private void SaveFile(string messageType, string filename, string eventName, string strDate, string date, string time, string dayIMG)
-        {
-
-            File.WriteAllText(filename, $"{eventName},{strDate},{date},{time},{dayIMG}");
-            MessagingCenter.Send<String>(messageType, "ModifiedMessage");
-            Navigation.PopAsync();
-        }
 
     }
 }
