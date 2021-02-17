@@ -34,7 +34,7 @@ namespace Thibodeau_Ashley_CE04
             MessagingCenter.Subscribe<EventDetails>(this, "EditItemMessage", (sender) =>
             {
                 editEvent = sender;
-                eventEntry.Text = sender.EventTitle;
+                eventEntry.Text = sender.EventName;
 
             });
         }
@@ -54,10 +54,47 @@ namespace Thibodeau_Ashley_CE04
 
         }
 
+        private string AssignIMG()
+        {
+            var dateSelected = datePicker.Date;
+
+            string wDay = dateSelected.DayOfWeek.ToString();
+            string imgFileName = null;
+
+
+            switch (wDay)
+            {
+                case "Monday":
+                    imgFileName = "monday.png";
+                    break;
+                case "Tuesday":
+                    imgFileName = "tuesday.png";
+                    break;
+                case "Wednesday":
+                    imgFileName = "wednesday.png";
+                    break;
+                case "Thursday":
+                    imgFileName = "thursday.png";
+                    break;
+                case "Friday":
+                    imgFileName = "friday.png";
+                    break;
+                case "Saturday":
+                    imgFileName = "saturday.png";
+                    break;
+                 case "Sunday":
+                    imgFileName = "sunday.png";
+                    break;
+
+            }
+
+            return imgFileName;
+
+        }
+
         async private void BtnDelete_Clicked(object sender, EventArgs e)
         {
             bool answer = await DisplayAlert("Delete Event", "Are you sure you would like to delete this Event?", "Yes", "No");
-
             Debug.WriteLine("Popup Answer: " + answer);
 
             if(answer)
@@ -72,20 +109,46 @@ namespace Thibodeau_Ashley_CE04
             }
         }
 
-        private void BtnSave_Clicked(object sender, EventArgs e)
+        async private void BtnSave_Clicked(object sender, EventArgs e)
         {
             string filename = Path.Combine(App.FolderPath, $"{Path.GetRandomFileName()}.CE04.txt");
-            string messageType = "New";
 
-            if(editEvent != null)
+            string messageType = "New";
+            var eventName = eventEntry.Text;
+            var eventDate = datePicker.Date;
+            string strDate = $"{ eventDate.Date.ToString("d") } {timePicker.Time.ToString("t")}";
+            string date = eventDate.Date.ToString("d");
+            string time = timePicker.Time.ToString();
+            var dayIMG = AssignIMG();
+
+
+            if (editEvent != null)
             {
-                //Save
-                filename = editEvent.Filename;
-                messageType = "Edit";
+                bool answer = await DisplayAlert("Save Event", "Are you sure you would like to save this Event?", "Yes", "No");
+                Debug.WriteLine("Popup Save Answer: " + answer);
+                if (answer)
+                {
+                    //Save
+                    filename = editEvent.Filename;
+                    messageType = "Edit";
+
+                }
+
             }
-            File.WriteAllText(filename,$"{eventEntry.Text},{datePicker.Date},{TimePicker.TimeProperty}");
+
+            SaveFile(messageType, filename, eventName, strDate, date, time, dayIMG);
+
+            
+
+        }
+
+        private void SaveFile(string messageType, string filename, string eventName, string strDate, string date, string time, string dayIMG)
+        {
+
+            File.WriteAllText(filename, $"{eventName},{strDate},{date},{time},{dayIMG}");
             MessagingCenter.Send<String>(messageType, "ModifiedMessage");
             Navigation.PopAsync();
         }
+
     }
 }

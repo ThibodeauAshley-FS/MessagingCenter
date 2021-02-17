@@ -10,7 +10,7 @@ GitHub Link: https://github.com/InterfaceProgramming/ce4-ThibodeauAshley-FS
  */-->
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Thibodeau_Ashley_CE04.EventCreationPage">
 
-<StackLayout Margin="15,150" Padding="10">
+<StackLayout Margin="15,100" Padding="10">
 
     <Frame BackgroundColor="#0870F3">
         <Label Text="Event Entry" TextColor="#FFFFFF" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="30" />
@@ -31,9 +31,9 @@ GitHub Link: https://github.com/InterfaceProgramming/ce4-ThibodeauAshley-FS
         </StackLayout>
     </StackLayout>
 
-    <StackLayout Orientation="Horizontal" Margin="0,20,0,0">
-        <Button x:Name="btnDelete" Text="Delete" HorizontalOptions="StartAndExpand"/>
-        <Button x:Name="btnSave" Text="Save" HorizontalOptions="EndAndExpand"/>
+    <StackLayout Orientation="Horizontal" >
+        <Button x:Name="btnSave" Text="Save" HorizontalOptions="StartAndExpand"/>
+        <Button x:Name="btnDelete" Text="Delete" HorizontalOptions="EndAndExpand" />
     </StackLayout>
     
 

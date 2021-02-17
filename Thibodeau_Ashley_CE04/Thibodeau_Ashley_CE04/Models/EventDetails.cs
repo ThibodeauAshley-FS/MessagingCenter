@@ -12,10 +12,11 @@ namespace Thibodeau_Ashley_CE04.Models
     public class EventDetails
     {
         public string Filename { get; set; }
-        public string EventTitle { get; set; }
+        public string EventName { get; set; }
+        public string DisplayDate { get; set; }
         public DateTime Date { get; set; }
         public TimeSpan Time { get; set; }
         public string DayIMG { get; set; }
-        public DateTime CreationDate { get; set; }
+       
     }
 }
